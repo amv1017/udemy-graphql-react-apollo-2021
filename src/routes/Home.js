@@ -1,7 +1,12 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default () => {
+  const link = '/123'
   return (
-    <h1>Главная страница</h1>
+    <div>
+      <h1>Главная страница</h1>
+      <Link to={link}>Film {link}</Link>
+    </div>
   )
 }
