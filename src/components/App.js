@@ -1,10 +1,16 @@
 import React from 'react'
+import { HashRouter as Router, Route, Routes } from 'react-router-dom'
+import Home from '../routes/Home'
+import Details from '../routes/Details'
 
 function App() {
   return (
-    <div className='App'>
-      <h1>Каталог фильмов</h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<Home />} />  
+        <Route exact path="/:id" element={<Details />} />
+      </Routes>
+    </Router>
   )
 }
 
