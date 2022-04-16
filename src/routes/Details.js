@@ -12,6 +12,11 @@ const GET_MOVIE = gql`
       rating
       language
     }
+    suggestions(id: $id) {
+      id
+      title
+      medium_cover_image
+    }
   }
 `
 
@@ -51,6 +56,16 @@ const Subtitle = styled.h4`
 
 const Description = styled.p`
   font-size: 28px;
+  margin-bottom: 8rem;
+`
+
+const Suggestions = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 16px;
+  margin-top: 1rem;
+  width: 90%;
 `
 
 export default () => {
@@ -59,16 +74,23 @@ export default () => {
     variables: {id: parseInt(id)},
   })
   return (
-    <Container>
-      <Column>
-        {loading && <h1 style={{ textAlign: 'center'}}>Loading...</h1>}
-        <Title>{data?.movie?.title}</Title>
-        <Subtitle>
-          {data?.movie?.language} · {data?.movie?.rating}
-        </Subtitle>
-        <Description>{data?.movie?.description_intro}</Description>
-      </Column>
-      <Poster bg={data?.movie?.medium_cover_image}></Poster>
-    </Container>
+    <div>
+      <Container>
+        <Column>
+          <Title>{data?.movie?.title}</Title>
+          <Subtitle>
+            {data?.movie?.language} · {data?.movie?.rating}
+          </Subtitle>
+          <Description>{data?.movie?.description_intro}</Description>
+          {!loading && <div style={{fontSize:'24px'}}>Suggested movies...</div>}
+          <Suggestions>
+            {data?.suggestions.map((s) => (
+                <div key={s.id}><Link to={`/${s.id}`}>{s.title}</Link></div>
+            ))}
+          </Suggestions>
+        </Column>
+        <Poster bg={data?.movie?.medium_cover_image}></Poster>
+      </Container>  
+    </div>
   )
 }
