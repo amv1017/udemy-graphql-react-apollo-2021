@@ -1,7 +1,7 @@
 import * as React from 'react'
-import styled from 'styled-components'
 import { gql, useQuery } from '@apollo/client'
 import Movie from '../components/Movie'
+import styled from 'styled-components'
 
 const GET_MOVIES = gql`
   query {
@@ -66,9 +66,13 @@ export default () => {
         <Subtitle>База фильмов на React, Apollo, GraphQL</Subtitle>
       </Header>
       {loading && <Loading>Загрузка...</Loading>}
-      {!loading && data?.movies && data.movies.map((m) => (
-        <Movie key={m.id} id={m.id} />
-      ))}
+      {!loading && data?.movies && (
+        <Movies>
+          {data.movies.map((m) => (
+            <Movie key={m.id} id={m.id} bg={m.medium_cover_image} />
+          ))}
+        </Movies>
+      )}
     </Container>
   )
 }
