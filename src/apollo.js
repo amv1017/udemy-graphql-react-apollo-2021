@@ -11,12 +11,12 @@ const client = new ApolloClient({
       isLiked: () => false
     },
     Mutation: {
-      likeMovie: (_, {id}, {cache}) => {
+      toggleLikeMovie: (_, {id, isLiked}, {cache}) => {
         cache.modify({
           id: `Movie:${id}`,
           fields: {
-            isLiked: () => true,
-            medium_cover_image: () => 'https://i.pinimg.com/originals/e5/cd/c6/e5cdc6cec55c6359d79440532a53041f.jpg'
+            isLiked: (isLiked) => !isLiked,
+            // medium_cover_image: () => 'https://i.pinimg.com/originals/e5/cd/c6/e5cdc6cec55c6359d79440532a53041f.jpg'
           },
         })
       }

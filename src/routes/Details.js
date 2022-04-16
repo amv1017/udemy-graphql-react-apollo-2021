@@ -6,11 +6,13 @@ import styled from 'styled-components'
 const GET_MOVIE = gql`
   query getMovie($id: Int!){
     movie(id: $id) {
+      id
       title
       medium_cover_image
       description_intro
       rating
       language
+      isLiked @client
     }
     suggestions(id: $id) {
       id
@@ -20,27 +22,26 @@ const GET_MOVIE = gql`
 `
 
 const Container = styled.div`
+  padding-top: 2rem;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-image: linear-gradient(-45deg, #d754ab, #fd723a);
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: space-evenly;
   color: white;
 `
 
 const Column = styled.div`
   margin-left: 10px;
   width: 50%;
+  height: max-content;
 `
 
-const Poster = styled.div`
-  background-image: url(${(props) => props.bg});
-  width: 25%;
-  height: 60%;
-  background-color: transparent;
-  background-size: cover;
-  background-position: center center;
+const Poster = styled.img`
+  height: 100%;
+  min-width: 20rem;
+  margin-top: 2rem;
+  border: 0.5rem solid slateblue;
 `
 
 const Title = styled.h1`
@@ -63,7 +64,7 @@ const Suggestions = styled.div`
   flex-direction: row;
   justify-content: space-between;
   font-size: 16px;
-  margin-top: 1rem;
+  margin: 2rem 0;
   width: 90%;
 `
 
@@ -76,9 +77,14 @@ export default () => {
     <Container>
       <Column>
         <Title>{data?.movie?.title}</Title>
-        <Subtitle>
-          {data?.movie?.language} · {data?.movie?.rating}
-        </Subtitle>
+        {!loading &&
+          <Subtitle>
+            {data?.movie?.language} · {data?.movie?.rating}
+          </Subtitle>
+        }
+        {!loading &&
+          <div>{data?.movie?.isLiked ? '👍' : '👎'}</div>
+        }
         <Description>{data?.movie?.description_intro}</Description>
         {!loading && <div style={{fontSize:'24px'}}>Suggested movies...</div>}
         <Suggestions>
@@ -87,7 +93,8 @@ export default () => {
           ))}
         </Suggestions>
       </Column>
-      <Poster bg={data?.movie?.medium_cover_image}></Poster>
+      {!loading && <Poster src={data?.movie?.medium_cover_image}></Poster>}
+      {!loading && <Link to='/'>Home</Link>}
     </Container>
   )
 }
