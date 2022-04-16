@@ -1,9 +1,9 @@
-import React from 'react'
+import * as React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Home from '../routes/Home'
 import Details from '../routes/Details'
 
-function App() {
+export default () => {
   return (
     <Router>
       <Routes>
@@ -13,5 +13,3 @@ function App() {
     </Router>
   )
 }
-
-export default App
